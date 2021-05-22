@@ -1,4 +1,4 @@
-import { signIn, useSession } from 'next-auth/client';
+import { signIn, useSession, signOut } from 'next-auth/client';
 import { FaGithub } from 'react-icons/fa';
 import { FiX } from 'react-icons/fi';
 
@@ -15,7 +15,7 @@ export function SignInButton() {
         <button type="button" className={styles.signInButton} onClick={() => !isUserLoggedIn && signIn('github')}>
             <FaGithub color={isUserLoggedIn ? '#4eba41' : '#eba417'} />
             { !isUserLoggedIn ? 'Sign in with Github' : isUserLoggedIn.user.name}
-            { isUserLoggedIn && <FiX  color="#737380" className={styles.closeIcon}/> }
+            { isUserLoggedIn && <FiX onClick={() => signOut()} color="#737380" className={styles.closeIcon}/> }
         </button>
     )
 }
