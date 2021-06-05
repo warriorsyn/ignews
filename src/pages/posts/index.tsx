@@ -1,4 +1,5 @@
-import { GetStaticProps, GetStaticPropsContext, NextApiHandler } from "next";
+import { GetStaticProps } from "next";
+import Link from 'next/link';
 import Head from "next/head";
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
@@ -28,11 +29,14 @@ export default function Posts({ posts }: PostsProps) {
             <main className={styles.container}>
                 <div className={styles.posts}>
                     { posts && posts.map(post => (
-                        <a key={post.slug}>
-                            <time>{post.updatedAt}</time>
-                            <strong>{post.title}</strong>
-                            <p>{post.excerpt}</p>
-                        </a>
+                        <Link href={`/posts/${post.slug}`}>
+                              <a key={post.slug}>
+                                <time>{post.updatedAt}</time>
+                                <strong>{post.title}</strong>
+                                <p>{post.excerpt}</p>
+                            </a>
+                        </Link>
+                      
                     )) }
                 </div>
             </main>
@@ -40,8 +44,8 @@ export default function Posts({ posts }: PostsProps) {
     );
 }
 
-export const getStaticProps: GetStaticProps = async ({ req }: GetStaticPropsContext) => {
-     const prismic = getPrismicClient(req);
+export const getStaticProps: GetStaticProps = async () => {
+     const prismic = getPrismicClient();
 
      const response = await prismic.query(
          Prismic.predicates.at('document.type', 'post'),
